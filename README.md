@@ -35,5 +35,9 @@ https://codechina.csdn.net/xjbx/minapper-wechat-search
 
 ![minapper-wechat-search](https://github.com/iamxjb/minapper-wechat-search/blob/master/images/search.png) 
 
+![minapper-wechat-search](https://github.com/iamxjb/minapper-wechat-search/blob/master/images/search3.png) 
+
+![minapper-wechat-search](https://github.com/iamxjb/minapper-wechat-search/blob/master/images/search2.png) 
+
 
 
