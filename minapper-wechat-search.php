@@ -2,7 +2,7 @@
 /*
 Plugin Name: Minapper Wechat Search
 Plugin URI: https://www.minapper.com
-Description: 提交微信小程序的页面和内容到微信搜索
+Description: 提交微信小程序的页面和内容到微信搜一搜
 Version: 0.5
 Author: jianbo
 Author URI: https://www.watch-life.net
