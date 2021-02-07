@@ -14,7 +14,7 @@
 
 # 插件使用及注意事项见：
 
-https://www.watch-life.net/wordpress-weixin-app
+https://wordpress.org/plugins/minapper-wechat-search
 
 # 插件在Wordpress 官方更新地址：
 
@@ -33,11 +33,11 @@ https://codechina.csdn.net/xjbx/minapper-wechat-search
 
 插件安装启用后，通过wordpress后台菜单“工具”-“微信搜索设置”，进入设置页面，进行设置。
 
-![minapper-wechat-search](https://github.com/iamxjb/minapper-wechat-search/blob/master/images/search.png) 
+![minapper-wechat-search](https://www.watch-life.net/images/minapper-wechat-search/search.png) 
 
-![minapper-wechat-search](https://github.com/iamxjb/minapper-wechat-search/blob/master/images/search3.png) 
+![minapper-wechat-search](https://www.watch-life.net/images/minapper-wechat-search/search3.png) 
 
-![minapper-wechat-search](https://github.com/iamxjb/minapper-wechat-search/blob/master/images/search2.png) 
+![minapper-wechat-search](https://www.watch-life.net/images/minapper-wechat-search/search2.png) 
 
 
 
