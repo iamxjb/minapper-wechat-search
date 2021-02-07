@@ -23,6 +23,7 @@ https://github.com/iamxjb/minapper-wechat-search
 # 插件镜像更新地址：
 
 https://gitee.com/iamxjb/minapper-wechat-search
+
 https://codechina.csdn.net/xjbx/minapper-wechat-search
 
 
