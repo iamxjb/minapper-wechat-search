@@ -31,6 +31,9 @@ https://codechina.csdn.net/xjbx/minapper-wechat-search
 
 # 使用说明：
 
-插件安装启用后，通过wordpress后台菜单“微信小程序设置”，进入设置页面，配置运行wordpress小程序需要的配置项。
+插件安装启用后，通过wordpress后台菜单“工具”-“微信搜索设置”，进入设置页面，进行设置。
 
-![rest-api-to-miniprogram](https://raw.githubusercontent.com/iamxjb/rest-api-to-miniprogram/master/includes/images/rest-api-to-miniprogram.png) 
+![minapper-wechat-search](https://github.com/iamxjb/minapper-wechat-search/blob/master/images/search.png) 
+
+
+
