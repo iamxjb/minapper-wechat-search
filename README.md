@@ -14,7 +14,7 @@
 
 # 插件使用及注意事项见：
 
-https://wordpress.org/plugins/minapper-wechat-search
+ https://www.watch-life.net/wordpress/minapper-wechat-search.html
 
 # 插件在Wordpress 官方更新地址：
 
