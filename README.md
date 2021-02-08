@@ -39,5 +39,9 @@ https://codechina.csdn.net/xjbx/minapper-wechat-search
 
 ![minapper-wechat-search](https://www.watch-life.net/images/minapper-wechat-search/search2.png) 
 
+# 特别提示：
+
+不限定微慕小程序开源版才可以使用，此插件支持所有使用wordpress作为后台的小程序。
+
 
 
