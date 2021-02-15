@@ -8,7 +8,7 @@ if(!class_exists('WP_List_Table')){
 
 
 
-class Posts_List extends WP_List_Table {   
+class Minapper_Posts_List extends WP_List_Table {   
     
 
     function __construct(){
@@ -108,11 +108,11 @@ class Posts_List extends WP_List_Table {
         }
         $path=$mws_miniprogram_post_path;
 
-        if('searhDataPost'=== $current_action) {
-            $url_list="";  
+        if('searhDataPost'=== $current_action) {         
+            
             $i=0;  
-            $ids=  empty($_REQUEST ['post'])?"":$_REQUEST ['post']; 
-            if($ids=="")
+            $postIds=  empty($_REQUEST ['post'])?"":$_REQUEST ['post']; 
+            if($postIds=="")
             {
                 return;
             }
@@ -122,10 +122,9 @@ class Posts_List extends WP_List_Table {
                 $pages=array();
                 
                     
-                foreach ($_REQUEST [ 'post' ]  as  $id )  
-                {  
-                    $post=get_post((int)$id); 
-                    $query=$mws_miniprogram_post_id."=".$id;
+                foreach ($_REQUEST [ 'post' ]  as  $postId )  
+                {                     
+                    $query=$mws_miniprogram_post_id."=".$postId;
                     $page = array(
                         'path' =>$path,
                         'query' =>$query
@@ -145,14 +144,14 @@ class Posts_List extends WP_List_Table {
                 }
                 else
                 {
-                    foreach ($_REQUEST [ 'post' ]  as  $id )  
+                    foreach ($_REQUEST [ 'post' ]  as  $postId )  
                     {
-                        $id=(int)$id;
-                        $searhDataPostCount = (int)get_post_meta($id, '_minapperWechatSearhDataPost', true); 
+                        $postId=(int) $postId;
+                        $searhDataPostCount = (int)get_post_meta($postId, '_minapperWechatSearhDataPost', true); 
                         $searhDataPostCount =$searhDataPostCount+1;  
-                        if(!update_post_meta($id, '_minapperWechatSearhDataPost', $searhDataPostCount))   
+                        if(!update_post_meta($postId, '_minapperWechatSearhDataPost', $searhDataPostCount))   
                         {  
-                            add_post_meta($id, '_minapperWechatSearhDataPost', 1, true);  
+                            add_post_meta($postId, '_minapperWechatSearhDataPost', 1, true);  
                         }
                     }
 
@@ -167,7 +166,7 @@ class Posts_List extends WP_List_Table {
         else  if('searhContentPost'=== $current_action) {
           
      
-            $ids=  empty($_REQUEST ['post'])?"":$_REQUEST ['post']; 
+            $postIds=  empty($_REQUEST ['post'])?"":$_REQUEST ['post']; 
             $category_id=empty(get_option('mws_content_search_category_id'))?1:(int)get_option('mws_content_search_category_id');
             $mws_miniprogram_cate_path= get_option("mws_miniprogram_cate_path");
             $mws_miniprogram_cate_id= get_option("mws_miniprogram_cate_id");
@@ -182,29 +181,29 @@ class Posts_List extends WP_List_Table {
                 echo '<div id="message" class="error"><p><strong>填写小程序跳转分类id参数名</strong></p></div>';
                 return;
             }
-            if($ids=="")
+            if($postIds=="")
             {
                 return;
             }
            
 
                 $pages=array();                                            
-                foreach ($_REQUEST [ 'post' ]  as  $id )  
+                foreach ($_REQUEST [ 'post' ]  as  $postId )  
                 {  
-                    $post=get_post((int)$id);
-                    $query=$mws_miniprogram_post_id."=".$id;       
+                    $post=get_post((int)$postId);
+                    $query=$mws_miniprogram_post_id."=".$postId;       
                     $data_list=array(); 
                     //$PageData['@type']='wxsearch_testcpdata';
                     $PageData['@type']='wxsearch_cpdata';                    
                     $PageData['update']=1;
-                    $PageData['content_id']=$id;                    
+                    $PageData['content_id']=$postId;                    
                     $PageData['page_type']=2;
                     $PageData['category_id']=$category_id;
-                    $PageData['h5_url']= get_permalink($id);
+                    $PageData['h5_url']= get_permalink($postId);
                     $PageData['title']=$post->post_title; 
                    // $PageData['abstract']=$post->post_excerpt;                  
                     $content=$post->post_content;
-                    $images =MWS_Util::getPostImages($content, $id); 
+                    $images =MWS_Util::getPostImages($content, $postId); 
                     $cover_img=array();
                     if(!empty($images))
                     {
@@ -219,7 +218,7 @@ class Posts_List extends WP_List_Table {
                     }
 
                     $section=array();
-                    $categorys =get_the_category((int)$id);
+                    $categorys =get_the_category((int)$postId);
                     $i=0;                    
                     foreach($categorys as $category)
                     {
@@ -265,14 +264,14 @@ class Posts_List extends WP_List_Table {
                 }
                 else
                 {
-                    foreach ($_REQUEST [ 'post' ]  as  $id )  
+                    foreach ($_REQUEST [ 'post' ]  as  $postId )  
                     {
-                        $id=(int)$id;
-                        $minapperContentPost = (int)get_post_meta($id, '_minapperWechatContentPost', true); 
+                        $postId=(int)$postId;
+                        $minapperContentPost = (int)get_post_meta($postId, '_minapperWechatContentPost', true); 
                         $minapperContentPost =$minapperContentPost+1;  
-                        if(!update_post_meta($id, '_minapperWechatContentPost', $minapperContentPost))   
+                        if(!update_post_meta($postId, '_minapperWechatContentPost', $minapperContentPost))   
                         {  
-                            add_post_meta($id, '_minapperWechatContentPost', 1, true);  
+                            add_post_meta($postId, '_minapperWechatContentPost', 1, true);  
                         }
                     }
 
@@ -321,7 +320,7 @@ function post_wechat_search_page() {
     }
     
 
-    $PostsListTable = new Posts_List();    
+    $PostsListTable = new Minapper_Posts_List();    
     $PostsListTable->prepare_items();
 
     ?>

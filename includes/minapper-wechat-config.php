@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function minapper_wechat_search_menu() {
 
     add_submenu_page('tools.php', 'Minapper Wachat Searc', '微信搜索设置',"administrator",'mianpper_wechat_search_slug', 'mianpper_wechat_search_page', 99 );
-    add_submenu_page('tools.php', "提交微信搜索", "提交微信搜索", "administrator", 'post_wechat_search_slug', 'post_wechat_search_page',100);
+    add_submenu_page('tools.php', "提交微信搜一搜", "提交微信搜一搜", "administrator", 'post_wechat_search_slug', 'post_wechat_search_page',100);
    // 调用注册设置函数
    add_action( 'admin_init', 'register_minapper_wechat_search_settings' );
 
@@ -16,8 +16,8 @@ function minapper_wechat_search_menu() {
 
 function get_MinapperWechatSearch_jquery_source() {
         $url = plugins_url('',__FILE__); 
-        wp_enqueue_style("tabs", plugins_url()."/minapper-wechat-search/includes/js/tab/tabs.css", false, "1.0", "all");
-        wp_enqueue_script("tabs", plugins_url()."/minapper-wechat-search/includes/js/tab/tabs.min.js", false, "1.0");
+        wp_enqueue_style("tabs", plugins_url().'/'.MINAPPER_WECHAT_SEARCH_PLUGIN_NAME.'/includes/js/tab/tabs.css', false, "1.0", "all");
+        wp_enqueue_script("tabs", plugins_url().'/'.MINAPPER_WECHAT_SEARCH_PLUGIN_NAME.'/includes/js/tab/tabs.min.js', false, "1.0");
         wp_enqueue_script('rawscript', plugins_url().'/'.MINAPPER_WECHAT_SEARCH_PLUGIN_NAME.'/includes/js/script.js', false, '1.0');
         if ( function_exists( 'wp_enqueue_media' ) ) {
             wp_enqueue_media();
@@ -88,7 +88,7 @@ if (version_compare(PHP_VERSION, '5.6.0', '<=') )
 
             <tr valign="top">
             <th scope="row">小程序文章详情页面路径</th>
-            <td><input type="text" name="mws_miniprogram_post_path" placeholder="pages/dedail/detail"  style="width:400px; height:40px" value="<?php echo esc_attr( get_option('mws_miniprogram_post_path') ); ?>" />
+            <td><input type="text" name="mws_miniprogram_post_path" placeholder="例如:pages/dedail/detail"  style="width:400px; height:40px" value="<?php echo esc_attr( get_option('mws_miniprogram_post_path') ); ?>" />
             <br /><p style="color: #959595 ; display:inline">小程序端文章详情的页面路径，例如微慕小程序文章详情页路径为：</p><p style="color: red; display:inline"><b>pages/detail/detail</b></p>
             </td>
  
@@ -96,13 +96,13 @@ if (version_compare(PHP_VERSION, '5.6.0', '<=') )
 
             <tr valign="top">
             <th scope="row">小程序文章详情id参数名</th>
-            <td><input type="text" name="mws_miniprogram_post_id" placeholder="id"  style="width:400px; height:40px" value="<?php echo esc_attr( get_option('mws_miniprogram_post_id') ); ?>" />(只支持英文字母字符)
+            <td><input type="text" name="mws_miniprogram_post_id" placeholder="例如:id"  style="width:400px; height:40px" value="<?php echo esc_attr( get_option('mws_miniprogram_post_id') ); ?>" />(只支持英文字母字符)
             <br /><p style="color: #959595 ; display:inline">小程序端跳转文章详情使用参数名，例如微慕小程序文章详情完整路径为：pages/detail/detail?id=888,那么此处填写参数名为：</p><p style="color: red; display:inline"><b>id</b></p>
             </td>
 
             <tr valign="top">
             <th scope="row">小程序分类页面路径</th>
-            <td><input type="text" name="mws_miniprogram_cate_path" placeholder="pages/list/list"  style="width:400px; height:40px" value="<?php echo esc_attr( get_option('mws_miniprogram_cate_path') ); ?>" />
+            <td><input type="text" name="mws_miniprogram_cate_path" placeholder="例如:pages/list/list"  style="width:400px; height:40px" value="<?php echo esc_attr( get_option('mws_miniprogram_cate_path') ); ?>" />
             <br /><p style="color: #959595 ; display:inline">小程序端分类的页面路径，例如微慕小程序分类页面路径为：</p><p style="color: red; display:inline"><b>pages/list/list</b></p>
             </td>
  
@@ -110,7 +110,7 @@ if (version_compare(PHP_VERSION, '5.6.0', '<=') )
 
             <tr valign="top">
             <th scope="row">小程序分类id参数名</th>
-            <td><input type="text" name="mws_miniprogram_cate_id" placeholder="categoryID"  style="width:400px; height:40px" value="<?php echo esc_attr( get_option('mws_miniprogram_cate_id') ); ?>" />(只支持英文字母字符)
+            <td><input type="text" name="mws_miniprogram_cate_id" placeholder="例如:categoryID"  style="width:400px; height:40px" value="<?php echo esc_attr( get_option('mws_miniprogram_cate_id') ); ?>" />(只支持英文字母字符)
             <br /><p style="color: #959595 ; display:inline">小程序端跳转文章分类使用参数名，例如微慕小程序文章详情完整路径为：pages/list/list?categoryID=888,那么此处填写参数名为：</p><p style="color: red; display:inline"><b>categoryID</b></p>
             </td>
 
@@ -223,11 +223,11 @@ if (version_compare(PHP_VERSION, '5.6.0', '<=') )
     <div class="section">
         <div style="display: flex; flex-direction: row; margin-bottom: 10px">
             <a href="https://www.minapper.com" target="_blank" style="text-decoration: none"><div style="width:120px; height:32px; background-color: #ff8f3b; border-radius: 4px; color: #fff;display: flex;justify-content: center; align-items: center;margin-right: 16px">微慕官网</div></a>
-           <a href="https://mall.minapper.com"  target="_blank" style="text-decoration: none"><div style="width:120px; height:32px; background-color: #fff; border: 1px solid #ff8f3b; border-radius: 4px; box-sizing: border-box; color: #ff8f3b;display: flex;justify-content: center; align-items: center">微慕商城</div></a>
+           <a href="https://shops.minapper.com"  target="_blank" style="text-decoration: none"><div style="width:120px; height:32px; background-color: #fff; border: 1px solid #ff8f3b; border-radius: 4px; box-sizing: border-box; color: #ff8f3b;display: flex;justify-content: center; align-items: center">微慕商城</div></a>
         </div>
                 <p style="color: #4c4c4c;text-align:justify; line-height: 2">微慕增强版WordPress小程序是一款，在原守望轩开源小程序（现微慕开源小程序）基础上重新架构、设计、优化过的wordpress多端小程序，性能和用户体验更佳，界面设计更加简洁清新，同时打通<span style="font-weight:bold">微信小程序、QQ小程序、百度小程序、支付宝小程序、头条小程序...真正实现一站多端</span>，可使用微信扫描下方小程序码直接体验：</p>
         <div>
-            <img src="https://plusimg.minapper.com/wp-content/uploads/2019/08/1565183497-%E5%BE%AE%E6%85%95%E6%B5%B7%E6%8A%A5-2019%E5%B9%B47%E6%9C%88.jpg" alt="微慕增强版" width="100%"></img>
+            <img src="<?php echo MINAPPER_WECHAT_SEARCH_PLUGIN_URL.'images/minapper-pro.jpg' ?>" alt="微慕增强版" width="100%"></img>
         </div>
     </div>
 
@@ -235,11 +235,11 @@ if (version_compare(PHP_VERSION, '5.6.0', '<=') )
     <div class="section">
         <div style="display: flex; flex-direction: row; margin-bottom: 10px">
             <a href="https://www.minapper.com" target="_blank" style="text-decoration: none"><div style="width:120px; height:32px; background-color: #fc6e6e; border-radius: 4px; color: #fff;display: flex;justify-content: center; align-items: center;margin-right: 16px">微慕官网</div></a>
-           <a href="https://mall.minapper.com"  target="_blank" style="text-decoration: none"><div style="width:120px; height:32px; background-color: #fff; border: 1px solid #fc6e6e; border-radius: 4px; box-sizing: border-box; color: #fc6e6e;display: flex;justify-content: center; align-items: center">微慕商城</div></a>
+           <a href="https://shops.minapper.com"  target="_blank" style="text-decoration: none"><div style="width:120px; height:32px; background-color: #fff; border: 1px solid #fc6e6e; border-radius: 4px; box-sizing: border-box; color: #fc6e6e;display: flex;justify-content: center; align-items: center">微慕商城</div></a>
         </div>
                 <p style="color: #4c4c4c;text-align:justify; line-height: 2">微慕版专业版WordPress小程序和插件，在“守望轩”开源小程序的基础上，架构完全重构，在性能上大幅度优化，增加了<span style="font-weight:bold">动态圈子、积分系统、文章投稿、发布动态、付费阅读、会员权限、多种图文列表样式、预约表单、模板消息</span>等功能，并且免费提供标准版、旅游版、图片版、企业版4套前端模板，可使用微信扫描下方小程序码直接体验：</p>
         <div>
-            <img src="https://www.watch-life.net/images/minapper-pro.jpg" alt="微慕专业版" width="100%"></img>
+            <img src="<?php echo MINAPPER_WECHAT_SEARCH_PLUGIN_URL.'images/minapper-pro.jpg' ?>" alt="微慕专业版" width="100%"></img>
 
         </div>
     </div>

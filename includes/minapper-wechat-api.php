@@ -8,8 +8,7 @@ class Minapper_Wechat_API {
 	
 
 	  //获取小程序Access Token
-	public function get_access_token() {
-		date_default_timezone_set('Asia/Shanghai');
+	public function get_access_token() {		
 		$appid = get_option('mws_appid');
 		$secret= get_option('mws_secret');
 		$result=array();

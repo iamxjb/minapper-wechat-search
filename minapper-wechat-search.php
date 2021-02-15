@@ -10,10 +10,10 @@ License: GPL v3
 WordPress requires at least: 4.7.1
 */
 
-
-define('MINAPPER_WECHAT_SEARCH_PLUGIN_DIR', plugin_dir_path(__FILE__));
-define('MINAPPER_WECHAT_SEARCH_PLUGIN_FILE',__FILE__);
 const MINAPPER_WECHAT_SEARCH_PLUGIN_NAME='minapper-wechat-search';
+define('MINAPPER_WECHAT_SEARCH_PLUGIN_DIR', plugin_dir_path(__FILE__));
+define('MINAPPER_WECHAT_SEARCH_PLUGIN_URL',plugins_url(MINAPPER_WECHAT_SEARCH_PLUGIN_NAME.'/', dirname(__FILE__)));
+
 include(MINAPPER_WECHAT_SEARCH_PLUGIN_DIR . 'includes/minapper-wechat-config.php');
 include(MINAPPER_WECHAT_SEARCH_PLUGIN_DIR . 'includes/minapper-wechat-api.php');
 include(MINAPPER_WECHAT_SEARCH_PLUGIN_DIR . 'includes/minapper-util.php');
