@@ -78,24 +78,18 @@ class Minapper_Posts_List extends WP_List_Table {
         $current_action=$this->current_action();
         $mws_miniprogram_post_path= get_option("mws_miniprogram_post_path");
         $mws_miniprogram_post_id= get_option("mws_miniprogram_post_id");
-
-      
-
         $appid = get_option('mws_appid');
         $secret= get_option('mws_secret');
-
         if(empty($appid))
         {
             echo '<div id="message" class="error"><p><strong>没有填写小程序appid</strong></p></div>';
             return;
         }
-
         if(empty($secret))
         {
             echo '<div id="message" class="error"><p><strong>没有填写小程序secret</strong></p></div>';
             return;
-        }
-        
+        }        
         if(empty($mws_miniprogram_post_id))
         {
             echo '<div id="message" class="error"><p><strong>没有填写小程序文章详情页面路径</strong></p></div>';
@@ -107,23 +101,33 @@ class Minapper_Posts_List extends WP_List_Table {
             return;
         }
         $path=$mws_miniprogram_post_path;
-
-        if('searhDataPost'=== $current_action) {         
-            
-            $i=0;  
-            $postIds=  empty($_REQUEST ['post'])?"":$_REQUEST ['post']; 
+        $postIds= array();
+        if(isset($_REQUEST ['post']) && !empty($_REQUEST ['post']))
+        {
+            $postIds=$_REQUEST ['post'];
+            if(is_array($postIds) && count($postIds)==0 && !empty($postIds))
+            {
+                return;
+            }                      
+        }
+        else
+        {
+            return;
+        }
+        if('searhDataPost'=== $current_action) {
             if($postIds=="")
             {
                 return;
             }
             if($current_action=="searhDataPost")
             {
-
                 $pages=array();
-                
-                    
-                foreach ($_REQUEST [ 'post' ]  as  $postId )  
-                {                     
+                foreach ($postIds as  $postId )  
+                { 
+                    if(get_post((int)$postId)==null)
+                    {
+                        continue;
+                    }                    
                     $query=$mws_miniprogram_post_id."=".$postId;
                     $page = array(
                         'path' =>$path,
@@ -144,8 +148,12 @@ class Minapper_Posts_List extends WP_List_Table {
                 }
                 else
                 {
-                    foreach ($_REQUEST [ 'post' ]  as  $postId )  
+                    foreach ($postIds as  $postId )  
                     {
+                        if(get_post((int)$postId)==null)
+                        {
+                            continue;
+                        } 
                         $postId=(int) $postId;
                         $searhDataPostCount = (int)get_post_meta($postId, '_minapperWechatSearhDataPost', true); 
                         $searhDataPostCount =$searhDataPostCount+1;  
@@ -154,7 +162,6 @@ class Minapper_Posts_List extends WP_List_Table {
                             add_post_meta($postId, '_minapperWechatSearhDataPost', 1, true);  
                         }
                     }
-
                     
                     echo '<div id="message" class="updated fade"><p><strong>'.$errmsg.'</strong></p></div>';
                     
@@ -164,9 +171,6 @@ class Minapper_Posts_List extends WP_List_Table {
         }
 
         else  if('searhContentPost'=== $current_action) {
-          
-     
-            $postIds=  empty($_REQUEST ['post'])?"":$_REQUEST ['post']; 
             $category_id=empty(get_option('mws_content_search_category_id'))?1:(int)get_option('mws_content_search_category_id');
             $mws_miniprogram_cate_path= get_option("mws_miniprogram_cate_path");
             $mws_miniprogram_cate_id= get_option("mws_miniprogram_cate_id");
@@ -187,101 +191,104 @@ class Minapper_Posts_List extends WP_List_Table {
             }
            
 
-                $pages=array();                                            
-                foreach ($_REQUEST [ 'post' ]  as  $postId )  
-                {  
-                    $post=get_post((int)$postId);
-                    $query=$mws_miniprogram_post_id."=".$postId;       
-                    $data_list=array(); 
-                    //$PageData['@type']='wxsearch_testcpdata';
-                    $PageData['@type']='wxsearch_cpdata';                    
-                    $PageData['update']=1;
-                    $PageData['content_id']=$postId;                    
-                    $PageData['page_type']=2;
-                    $PageData['category_id']=$category_id;
-                    $PageData['h5_url']= get_permalink($postId);
-                    $PageData['title']=$post->post_title; 
-                   // $PageData['abstract']=$post->post_excerpt;                  
-                    $content=$post->post_content;
-                    $images =MWS_Util::getPostImages($content, $postId); 
-                    $cover_img=array();
-                    if(!empty($images))
-                    {
-                        if(!empty($images['post_thumbnail_image']))
-                        {
-                            $_cover_img['cover_img_url']=$images['post_thumbnail_image'];
-                            $_cover_img['cover_img_size']=1; 
-                            $cover_img[]=$_cover_img;
-                            $PageData['cover_img']=$cover_img;
-                        }
-                           
-                    }
-
-                    $section=array();
-                    $categorys =get_the_category((int)$postId);
-                    $i=0;                    
-                    foreach($categorys as $category)
-                    {
-                    
-                        if($i>3)
-                        {
-                            break;
-                        }
-                        $_section['section_name']=$category->cat_name;
-                        $cat_id=(int)$category->term_id;
-                        $cat_path=$mws_miniprogram_cate_path.'?'.$mws_miniprogram_cate_id.'='.$cat_id; 
-                        $_section['section_url']=$cat_path;
-                        $section[]=$_section;
-                        $i++;
-
-                    }
-                    
-                    $PageData['section']=$section;  
-                    $mainbody=wp_filter_nohtml_kses($content); 
-                    $PageData['mainbody']=$mainbody;
-                    $post_date = strtotime($post->post_date);
-                    $PageData['time_publish']=$post_date;
-                    $post_modified=strtotime($post->post_modified);
-                    $PageData['time_modify']=$post_modified;
-                    $data_list[]=$PageData;
-                    $page = array(
-                        'path' =>$path,
-                        'query' =>$query,
-                        'data_list'=>$data_list                    
-                    );                    
-
-                    $pages[]=$page; 
-                } 
-                $data['pages']=$pages;
-                $result = MWS()->wxapi->submitPages($data);
-                $errcode=$result['errcode'];
-                $errmsg=$result['errmsg']; 
-                //var_dump($images['post_all_images']); 
-                 //var_dump($pages);             
-                if($errcode !='0')
+            $pages=array();                                            
+            foreach ($postIds as  $postId )  
+            {  
+                if(get_post((int)$postId)==null)
                 {
-                    echo '<div id="message" class="error"><p><strong>'.$errmsg.'</strong></p></div>';
+                    continue;
                 }
-                else
+                $post=get_post((int)$postId);
+                $query=$mws_miniprogram_post_id."=".$postId;       
+                $data_list=array(); 
+                //$PageData['@type']='wxsearch_testcpdata';
+                $PageData['@type']='wxsearch_cpdata';                    
+                $PageData['update']=1;
+                $PageData['content_id']=$postId;                    
+                $PageData['page_type']=2;
+                $PageData['category_id']=$category_id;
+                $PageData['h5_url']= get_permalink($postId);
+                $PageData['title']=$post->post_title; 
+                // $PageData['abstract']=$post->post_excerpt;                  
+                $content=$post->post_content;
+                $images =MWS_Util::getPostImages($content, $postId); 
+                $cover_img=array();
+                if(!empty($images))
                 {
-                    foreach ($_REQUEST [ 'post' ]  as  $postId )  
+                    if(!empty($images['post_thumbnail_image']))
                     {
-                        $postId=(int)$postId;
-                        $minapperContentPost = (int)get_post_meta($postId, '_minapperWechatContentPost', true); 
-                        $minapperContentPost =$minapperContentPost+1;  
-                        if(!update_post_meta($postId, '_minapperWechatContentPost', $minapperContentPost))   
-                        {  
-                            add_post_meta($postId, '_minapperWechatContentPost', 1, true);  
-                        }
+                        $_cover_img['cover_img_url']=$images['post_thumbnail_image'];
+                        $_cover_img['cover_img_size']=1; 
+                        $cover_img[]=$_cover_img;
+                        $PageData['cover_img']=$cover_img;
                     }
+                        
+                }
 
-                    
-                    echo '<div id="message" class="updated fade"><p><strong>'.$errmsg.'</strong></p></div>';
-                    
-                }               
-            
-                //var_dump($result);
-            
+                $section=array();
+                $categorys =get_the_category((int)$postId);
+                $i=0;                    
+                foreach($categorys as $category)
+                {
+                
+                    if($i>3)
+                    {
+                        break;
+                    }
+                    $_section['section_name']=$category->cat_name;
+                    $cat_id=(int)$category->term_id;
+                    $cat_path=$mws_miniprogram_cate_path.'?'.$mws_miniprogram_cate_id.'='.$cat_id; 
+                    $_section['section_url']=$cat_path;
+                    $section[]=$_section;
+                    $i++;
+
+                }
+                
+                $PageData['section']=$section;  
+                $mainbody=wp_filter_nohtml_kses($content); 
+                $PageData['mainbody']=$mainbody;
+                $post_date = strtotime($post->post_date);
+                $PageData['time_publish']=$post_date;
+                $post_modified=strtotime($post->post_modified);
+                $PageData['time_modify']=$post_modified;
+                $data_list[]=$PageData;
+                $page = array(
+                    'path' =>$path,
+                    'query' =>$query,
+                    'data_list'=>$data_list                    
+                );                    
+
+                $pages[]=$page; 
+            } 
+            $data['pages']=$pages;
+            $result = MWS()->wxapi->submitPages($data);
+            $errcode=$result['errcode'];
+            $errmsg=$result['errmsg']; 
+            //var_dump($images['post_all_images']); 
+                //var_dump($pages);             
+            if($errcode !='0')
+            {
+                echo '<div id="message" class="error"><p><strong>'.$errmsg.'</strong></p></div>';
+            }
+            else
+            {
+                foreach ($postIds as  $postId)  
+                {
+                    if(get_post((int)$postId)==null)
+                    {
+                        continue;
+                    }
+                    $postId=(int)$postId;
+                    $minapperContentPost = (int)get_post_meta($postId, '_minapperWechatContentPost', true); 
+                    $minapperContentPost =$minapperContentPost+1;  
+                    if(!update_post_meta($postId, '_minapperWechatContentPost', $minapperContentPost))   
+                    {  
+                        add_post_meta($postId, '_minapperWechatContentPost', 1, true);  
+                    }
+                }                
+                echo '<div id="message" class="updated fade"><p><strong>'.$errmsg.'</strong></p></div>';
+                
+            }   
         } 
         
     }
@@ -334,7 +341,7 @@ function post_wechat_search_page() {
         
         
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
-        <form id="postBaiduMapFrom" method="get">
+        <form id="postBaiduMapFrom" method="post">
             <!-- For plugins, we also need to ensure that the form posts back to our current page -->
             <?php 
                 $PostsListTable->search_box( __( 'Search' ), 'search-box-id' ); 
