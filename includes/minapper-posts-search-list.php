@@ -67,7 +67,8 @@ class Minapper_Posts_List extends WP_List_Table {
     function get_bulk_actions() {
         $actions = array(
             'searhDataPost'    => '提交页面搜索',
-            'searhContentPost'    => '提交内容搜索'
+            'searhContentPost'    => '提交内容搜索',
+            'searhContentDelete'    => '删除内容搜索'
          
         );
         return $actions;
@@ -170,10 +171,16 @@ class Minapper_Posts_List extends WP_List_Table {
             } 
         }
 
-        else  if('searhContentPost'=== $current_action) {
+        else  if('searhContentPost'=== $current_action || 'searhContentDelete'=== $current_action ) {
             $category_id=empty(get_option('mws_content_search_category_id'))?1:(int)get_option('mws_content_search_category_id');
             $mws_miniprogram_cate_path= get_option("mws_miniprogram_cate_path");
             $mws_miniprogram_cate_id= get_option("mws_miniprogram_cate_id");
+
+            $update=1;
+            if('searhContentDelete'=== $current_action)
+            {
+                $update=3;
+            }
 
             if(empty($mws_miniprogram_cate_path))
             {
@@ -192,7 +199,7 @@ class Minapper_Posts_List extends WP_List_Table {
            
 
             $pages=array();                                            
-            foreach ($postIds as  $postId )  
+            foreach ($postIds as $postId)  
             {  
                 if(get_post((int)$postId)==null)
                 {
@@ -203,7 +210,7 @@ class Minapper_Posts_List extends WP_List_Table {
                 $data_list=array(); 
                 //$PageData['@type']='wxsearch_testcpdata';
                 $PageData['@type']='wxsearch_cpdata';                    
-                $PageData['update']=1;
+                $PageData['update']=$update;
                 $PageData['content_id']=$postId;                    
                 $PageData['page_type']=2;
                 $PageData['category_id']=$category_id;
@@ -280,7 +287,16 @@ class Minapper_Posts_List extends WP_List_Table {
                     }
                     $postId=(int)$postId;
                     $minapperContentPost = (int)get_post_meta($postId, '_minapperWechatContentPost', true); 
-                    $minapperContentPost =$minapperContentPost+1;  
+                    if($update==1)
+                    {
+                        $minapperContentPost =$minapperContentPost+1;  
+                    }
+                    else if($update==3)
+                    {
+                        $minapperContentPost =0;  
+                        
+                    }
+                    
                     if(!update_post_meta($postId, '_minapperWechatContentPost', $minapperContentPost))   
                     {  
                         add_post_meta($postId, '_minapperWechatContentPost', 1, true);  
@@ -290,6 +306,7 @@ class Minapper_Posts_List extends WP_List_Table {
                 
             }   
         } 
+        
         
     }
     function prepare_items() {
