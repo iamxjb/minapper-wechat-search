@@ -102,18 +102,33 @@ class Minapper_Posts_List extends WP_List_Table {
             return;
         }
         $path=$mws_miniprogram_post_path;
-        $postIds= array();
-        if(isset($_REQUEST ['post']) && !empty($_REQUEST ['post']))
-        {
-            $postIds=$_REQUEST ['post'];
-            if(is_array($postIds) && count($postIds)==0 && !empty($postIds))
-            {
-                return;
-            }                      
+        $postIds=isset($_REQUEST ['post'])?$_REQUEST ['post']:"";
+        if(empty($postIds))
+        {         
+            return;
         }
         else
         {
-            return;
+            if(is_array($postIds) && count($postIds)==0 && !empty($postIds))
+            {
+                return;
+            } 
+            $flag=false;
+            foreach ($postIds as  $postId )  
+            {
+                if(!is_int($postId) && get_post((int)$postId)==null)
+                {
+                    $flag=true;
+                    break;
+                
+                }
+            }
+            if($flag)
+            {
+                return;
+            }
+            
+            
         }
         if('searhDataPost'=== $current_action) {
             if($postIds=="")
@@ -313,7 +328,14 @@ class Minapper_Posts_List extends WP_List_Table {
         global $wpdb;
         $per_page = 30;     
         $columns = $this->get_columns();
-        $s=isset($_REQUEST['s'])?$_REQUEST['s']:""; 
+        $s=isset($_REQUEST['s'])?$_REQUEST['s']:''; 
+        if(empty($s))
+        {         
+            $s="";
+        }
+        else{
+            $s = MWS_Util::post_check($s);            
+        }
         $hidden = array();
         $sortable = $this->get_sortable_columns();       
         $this->_column_headers = array($columns, $hidden, $sortable);      
@@ -335,7 +357,6 @@ class Minapper_Posts_List extends WP_List_Table {
         }
         
     }
-
 }
 
 function post_wechat_search_page() {
@@ -364,7 +385,7 @@ function post_wechat_search_page() {
                 $PostsListTable->search_box( __( 'Search' ), 'search-box-id' ); 
     ?>
        <input type="hidden" name="page" value="post_wechat_search_slug"/>
-            
+          
             <!-- Now we can render the completed list table -->
             <?php $PostsListTable->display() ?>
         </form>

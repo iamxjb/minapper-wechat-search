@@ -141,4 +141,14 @@ public static  function get_post_content_first_image($post_content){
         $postsCount = (int)$wpdb->get_var($sql);
         return $postsCount;
     }
+
+    public static function post_check($value) {
+        $value = addslashes($value);
+        $value = str_replace("_", "\_", $value);    
+        $value = str_replace("%", "\%", $value);
+        $value = nl2br($value);
+        $value = htmlspecialchars($value);
+        return $value;
+    
+    }
 }
