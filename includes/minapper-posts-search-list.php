@@ -102,7 +102,12 @@ class Minapper_Posts_List extends WP_List_Table {
             return;
         }
         $path=$mws_miniprogram_post_path;
-        $postIds=isset($_REQUEST ['post'])?$_REQUEST ['post']:"";
+        $postIds =array();
+        if(isset($_REQUEST ['post']))
+        {        
+           $postIds=$_REQUEST ['post'];
+           $postIds=array_map(array($this,'checkPostId'),$postIds);
+        }       
         if(empty($postIds))
         {         
             return;
@@ -322,19 +327,42 @@ class Minapper_Posts_List extends WP_List_Table {
             }   
         } 
         
+    }
+    function checkPostId($postId)    
+    { 
+        $postId=MWS_Util::post_check($postId);
+        if(get_post((int)$postId) !=null)
+        {
+          
+            return $postId;
+        }
+        
         
     }
+
     function prepare_items() {
         global $wpdb;
         $per_page = 30;     
         $columns = $this->get_columns();
-        $s=isset($_REQUEST['s'])?$_REQUEST['s']:''; 
-        if(empty($s))
+        $s='';
+        if(isset($_REQUEST['s']))
+        {
+            $s=$_REQUEST['s'];
+        }
+        if(empty($s) && !is_string($s) && mb_strlen($str,'utf8')>30)
         {         
             $s="";
         }
         else{
-            $s = MWS_Util::post_check($s);            
+            $str = '/select|insert|update|delete|\#|\'|\\*|\*|\.\.\/|\.\/|union|into|load_file|outfile/i';
+            if(preg_match($str, $s))
+            {
+                $s='';
+            }
+            else{
+                $s = MWS_Util::post_check($s); 
+            }
+                       
         }
         $hidden = array();
         $sortable = $this->get_sortable_columns();       
