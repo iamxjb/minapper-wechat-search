@@ -148,6 +148,7 @@ public static  function get_post_content_first_image($post_content){
         $value = str_replace("%", "\%", $value);
         $value = nl2br($value);
         $value = htmlspecialchars($value);
+        $value= sanitize_text_field($value);
         return $value;
     
     }

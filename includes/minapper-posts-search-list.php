@@ -102,7 +102,12 @@ class Minapper_Posts_List extends WP_List_Table {
             return;
         }
         $path=$mws_miniprogram_post_path;
-        $postIds=isset($_REQUEST ['post'])?$_REQUEST ['post']:"";
+        $postIds =array();
+        if(isset($_REQUEST ['post']))
+        {        
+           $postIds=$_REQUEST ['post'];
+           $postIds=array_map(array($this,'checkPostId'),$postIds);
+        }       
         if(empty($postIds))
         {         
             return;
@@ -322,8 +327,19 @@ class Minapper_Posts_List extends WP_List_Table {
             }   
         } 
         
+    }
+    function checkPostId($postId)    
+    { 
+        $postId=MWS_Util::post_check($postId);
+        if(get_post((int)$postId) !=null)
+        {
+          
+            return $postId;
+        }
+        
         
     }
+
     function prepare_items() {
         global $wpdb;
         $per_page = 30;     
