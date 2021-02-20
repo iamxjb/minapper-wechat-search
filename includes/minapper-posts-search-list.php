@@ -349,7 +349,7 @@ class Minapper_Posts_List extends WP_List_Table {
         {
             $s=$_REQUEST['s'];
         }
-        if(empty($s) && !is_string($s) && mb_strlen($str,'utf8')>30)
+        if(empty($s) || !is_string($s) || mb_strlen($s,'utf8')>30)
         {         
             $s="";
         }
