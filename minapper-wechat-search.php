@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Minapper Wechat Search
+Plugin Name: Minapper Wechat Search 微慕搜索助手
 Plugin URI: https://www.minapper.com
 Description: 提交微信小程序的页面和内容到微信搜一搜
 Version: 0.5

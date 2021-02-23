@@ -6,8 +6,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 function minapper_wechat_search_menu() {
 
-    add_submenu_page('tools.php', 'Minapper Wachat Searc', '微信搜索设置',"administrator",'mianpper_wechat_search_slug', 'mianpper_wechat_search_page', 99 );
-    add_submenu_page('tools.php', "提交微信搜一搜", "提交微信搜一搜", "administrator", 'post_wechat_search_slug', 'post_wechat_search_page',100);
+    add_menu_page('微慕搜索助手', '微慕搜索助手', 'administrator', 'mianpper_wechat_search_slug','mianpper_wechat_search_page', plugins_url(MINAPPER_WECHAT_SEARCH_PLUGIN_NAME.'/images/icon16.png'), 99);
+    add_submenu_page('mianpper_wechat_search_slug', "提交微信搜一搜", "提交微信搜一搜", "administrator", 'post_wechat_search_slug', 'post_wechat_search_page',100);
    // 调用注册设置函数
    add_action( 'admin_init', 'register_minapper_wechat_search_settings' );
 
