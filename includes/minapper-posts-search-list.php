@@ -401,7 +401,7 @@ function post_wechat_search_page() {
      <div class="wrap">
         
         <div id="icon-users" class="icon32"><br/></div>
-        <h2>提交小程序页面和内容到微信搜索</h2>
+        <h2>提交微信搜索</h2>
 
         <p>Minapper wachat search by <a href="https://www.minapper.com" target="_blank">微慕</a>.
         
