@@ -3,7 +3,7 @@
 Plugin Name: Minapper Wechat Search 微慕搜索助手
 Plugin URI: https://www.minapper.com
 Description: 提交微信小程序的页面和内容到微信搜一搜
-Version: 0.8
+Version: 1.0
 Author: jianbo
 Author URI: https://www.watch-life.net
 License: GPL v3
@@ -32,6 +32,7 @@ if ( ! class_exists( 'MinapperWechatSearch' ) ) {
             if ( is_admin() ) {             
                 
                 //new WP_Category_Config();
+            add_action( 'admin_enqueue_scripts', 'minapper_wechat_search_admin_style', 9999 );
                add_action('admin_menu', 'minapper_wechat_search_menu');       
                add_filter( 'plugin_action_links', 'minapper_wechat_search_action_links', 10, 2 );
              
@@ -58,6 +59,10 @@ if ( ! class_exists( 'MinapperWechatSearch' ) ) {
         
         return $GLOBALS['MinapperWechatSearch'];
     }
+
+    function minapper_wechat_search_admin_style() {
+		wp_enqueue_style( 'minapper-wechat-search-admin-css', MINAPPER_WECHAT_SEARCH_PLUGIN_URL. 'includes/css/menu.css', array(),'4.0.4' );
+	}
 
     function minapper_wechat_search_action_links( $links, $file ) {
         if ( plugin_basename( __FILE__ ) !== $file ) {

@@ -35,6 +35,9 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 == Changelog ==
 
+= 1.0 =
+* 调整菜单图标
+
 = 0.8 =
 * 提交wordpress插件库
 
