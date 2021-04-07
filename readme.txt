@@ -35,6 +35,7 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 == Changelog ==
 
+
 = 1.1 =
 * 修改图片地址
 
