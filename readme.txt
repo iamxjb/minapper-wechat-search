@@ -4,7 +4,7 @@ Donate link: https://www.minapper.com
 Tags: 微信小程序,搜索,内容,页面,微信搜一搜
 Requires at least: 4.7.1
 Tested up to: 5.6.1
-Stable tag: 1.0
+Stable tag: 1.1
 Requires PHP: 5.6
 License: GPL v3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -34,6 +34,9 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 
 == Changelog ==
+
+= 1.1 =
+* 修改图片地址
 
 = 1.0 =
 * 调整菜单图标
