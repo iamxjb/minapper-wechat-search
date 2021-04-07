@@ -229,7 +229,7 @@ if (version_compare(PHP_VERSION, '5.6.0', '<=') )
         </div>
                 <p style="color: #4c4c4c;text-align:justify; line-height: 2">微慕增强版WordPress小程序是一款，在原守望轩开源小程序（现微慕开源小程序）基础上重新架构、设计、优化过的wordpress多端小程序，性能和用户体验更佳，界面设计更加简洁清新，同时打通<span style="font-weight:bold">微信小程序、QQ小程序、百度小程序、支付宝小程序、头条小程序...真正实现一站多端</span>，可使用微信扫描下方小程序码直接体验：</p>
         <div>
-            <img src="<?php echo MINAPPER_WECHAT_SEARCH_PLUGIN_URL.'images/minapper-pro.jpg' ?>" alt="微慕增强版" width="100%"></img>
+            <img src="<?php echo MINAPPER_WECHAT_SEARCH_PLUGIN_URL.'images/minapper-plus.jpg' ?>" alt="微慕增强版" width="100%"></img>
         </div>
     </div>
 
