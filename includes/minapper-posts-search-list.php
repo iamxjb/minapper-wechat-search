@@ -43,10 +43,12 @@ class Minapper_Posts_List extends WP_List_Table {
     function get_columns(){
         $columns = array(
             'cb'        => '<input type="checkbox" />',          //Render a checkbox instead of text
+            'ID'     => 'id',    
             'post_title'     => '标题',          
             'post_date'  => '日期',        
             'searhDataPostCount'     => '页面提交次数',
-            'minapperContentPost'     => '内容提交次数'             
+            'minapperContentPost'     => '内容提交次数(正式数据)',
+            'minapperContentTestPost'     => '内容提交次数(测试数据)'              
         
             
         );
@@ -67,8 +69,10 @@ class Minapper_Posts_List extends WP_List_Table {
     function get_bulk_actions() {
         $actions = array(
             'searhDataPost'    => '提交页面搜索',
-            'searhContentPost'    => '提交内容搜索',
-            'searhContentDelete'    => '删除内容搜索'
+            'searhContentPost'    => '提交正式数据到内容搜索',
+            'searhContentDelete'    => '删除内容搜索正式数据',
+            'searhContentTestPost'    => '提交测试数据到内容搜索',
+            'searhContentTestDelete'    => '删除内容搜索测试数据'
          
         );
         return $actions;
@@ -191,15 +195,28 @@ class Minapper_Posts_List extends WP_List_Table {
             } 
         }
 
-        else  if('searhContentPost'=== $current_action || 'searhContentDelete'=== $current_action ) {
+        else  if('searhContentPost'=== $current_action || 'searhContentDelete'=== $current_action || 'searhContentTestPost'=== $current_action || 'searhContentTestDelete'=== $current_action ) {
             $category_id=empty(get_option('mws_content_search_category_id'))?1:(int)get_option('mws_content_search_category_id');
             $mws_miniprogram_cate_path= get_option("mws_miniprogram_cate_path");
             $mws_miniprogram_cate_id= get_option("mws_miniprogram_cate_id");
 
+          
+            
+            $metakey="_minapperWechatContentPost";
+            if('searhContentTestPost'=== $current_action || 'searhContentTestDelete'=== $current_action)
+            {
+                $metakey="_minapperWechatContentTestPost";
+            }
+
             $update=1;
-            if('searhContentDelete'=== $current_action)
+            if('searhContentDelete'=== $current_action  || 'searhContentTestDelete'=== $current_action)
             {
                 $update=3;
+            }
+            $datatype="wxsearch_cpdata";
+            if('searhContentTestPost'=== $current_action)
+            {
+                $datatype="wxsearch_testcpdata";
             }
 
             if(empty($mws_miniprogram_cate_path))
@@ -227,9 +244,8 @@ class Minapper_Posts_List extends WP_List_Table {
                 }
                 $post=get_post((int)$postId);
                 $query=$mws_miniprogram_post_id."=".$postId;       
-                $data_list=array(); 
-                //$PageData['@type']='wxsearch_testcpdata';
-                $PageData['@type']='wxsearch_cpdata';                    
+                $data_list=array();                
+                $PageData['@type']=$datatype;                    
                 $PageData['update']=$update;
                 $PageData['content_id']=$postId;                    
                 $PageData['page_type']=2;
@@ -306,7 +322,7 @@ class Minapper_Posts_List extends WP_List_Table {
                         continue;
                     }
                     $postId=(int)$postId;
-                    $minapperContentPost = (int)get_post_meta($postId, '_minapperWechatContentPost', true); 
+                    $minapperContentPost = (int)get_post_meta($postId, $metakey, true); 
                     if($update==1)
                     {
                         $minapperContentPost =$minapperContentPost+1;  
@@ -317,9 +333,9 @@ class Minapper_Posts_List extends WP_List_Table {
                         
                     }
                     
-                    if(!update_post_meta($postId, '_minapperWechatContentPost', $minapperContentPost))   
+                    if(!update_post_meta($postId, $metakey, $minapperContentPost))   
                     {  
-                        add_post_meta($postId, '_minapperWechatContentPost', 1, true);  
+                        add_post_meta($postId, $metakey, 1, true);  
                     }
                 }                
                 echo '<div id="message" class="updated fade"><p><strong>'.$errmsg.'</strong></p></div>';

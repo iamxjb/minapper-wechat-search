@@ -106,7 +106,8 @@ public static  function get_post_content_first_image($post_content){
         $wpdb->minapper_ext= $wpdb->prefix.'minapper_ext';
         $sql = "SELECT t.*,
         (select s.meta_value from ".$wpdb->postmeta." s where s.post_id =t.id and s.meta_key='_minapperWechatSearhDataPost') as searhDataPostCount,
-        (select s5.meta_value from ".$wpdb->postmeta." s5 where s5.post_id =t.id and s5.meta_key='_minapperWechatContentPost') as minapperContentPost
+        (select s5.meta_value from ".$wpdb->postmeta." s5 where s5.post_id =t.id and s5.meta_key='_minapperWechatContentPost') as minapperContentPost,
+        (select s6.meta_value from ".$wpdb->postmeta." s6 where s6.post_id =t.id and s6.meta_key='_minapperWechatContentTestPost') as minapperContentTestPost
 
            FROM  ".$wpdb->posts  ;
         $sql .=" t  where post_status='publish' ";
