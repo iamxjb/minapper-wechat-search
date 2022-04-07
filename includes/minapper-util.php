@@ -110,7 +110,7 @@ public static  function get_post_content_first_image($post_content){
         (select s6.meta_value from ".$wpdb->postmeta." s6 where s6.post_id =t.id and s6.meta_key='_minapperWechatContentTestPost') as minapperContentTestPost
 
            FROM  ".$wpdb->posts  ;
-        $sql .=" t  where post_status='publish' ";
+        $sql .=" t  where post_status='publish' and post_type='post' ";
        
         if(!empty($s))
         {
